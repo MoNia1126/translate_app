@@ -1,0 +1,55 @@
+Future<void> _translateText(String text) async {
+      final response = await http.post(
+        Uri.parse('https://translation.googleapis.com/language/translate/v2'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'q': text,
+          'target': 'es', // Target language code (Spanish in this case)
+          'source': 'en', // Source language code (English in this case)
+          'key': 'YOUR_API_KEY', // Replace with your actual API key
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        _translatedText = jsonResponse['data']['translations'][0]['translatedText'];
+      } else {
+        _translatedText = 'Failed to translate';
+      }
+    }
+////
+onTap: () async {
+                        // await _translateText(_controller.text);
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(_translatedText),
+                          ),
+                        );
+                      },
+
+
+
+///    Size screenSize = MediaQuery.of(context).size;
+
+BlocBuilder<LanguageCubit, LanguageState>(
+                builder: (context, state) {
+                  if (state is LanguageLoading) {
+                    return CircularProgressIndicator();
+                  } else if (state is LanguageLoaded) {
+                    return
+
+
+                     else if (state is LanguageError) {
+                                        return Text(state.message, style: TextStyle(color: Colors.red));
+                                      } else {
+                                        return Container();
+                                    }
+
+
+ return Text(
+                      state.message,
+                      style: TextStyle(color: Colors.red),
+                    );
